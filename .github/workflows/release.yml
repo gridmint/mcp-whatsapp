@@ -10,26 +10,21 @@ permissions:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            target: bun-linux-x64
+          - target: bun-linux-x64
             artifact: mcp-whatsapp-linux-x64
-          - os: ubuntu-latest
-            target: bun-linux-arm64
+          - target: bun-linux-arm64
             artifact: mcp-whatsapp-linux-arm64
-          - os: macos-latest
-            target: bun-darwin-arm64
+          - target: bun-darwin-arm64
             artifact: mcp-whatsapp-darwin-arm64
-          - os: macos-13
-            target: bun-darwin-x64
+          - target: bun-darwin-x64
             artifact: mcp-whatsapp-darwin-x64
-          - os: ubuntu-latest
-            target: bun-windows-x64
+          - target: bun-windows-x64
             artifact: mcp-whatsapp-win-x64.exe
 
-    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
