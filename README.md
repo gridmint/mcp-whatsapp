@@ -24,7 +24,7 @@ Built with [Baileys](https://github.com/WhiskeySockets/Baileys), [Bun](https://b
 - 📎 **Media** — images, documents, stickers, voice
 - 👥 **Chats** — list, search, archive, mute, pin
 - 👤 **Contacts** — check numbers, profiles, block/unblock, presence
-- 🔒 **Session persistence** — authenticate once, stays connected
+- 🔒 **Machine-bound sessions** — encrypted with hardware ID, useless if copied to another device
 - 📦 **Single binary** — no Node.js, no npm, just download and run
 
 ## Quick Start
@@ -86,6 +86,19 @@ On first run, a QR code is displayed in the terminal. Scan it with WhatsApp on y
 2. Scan the QR code
 
 Session is saved to `~/.mcp-whatsapp/auth/` — you won't need to scan again unless you log out.
+
+## Security
+
+Session files are **encrypted with your machine's hardware ID** (AES-256-GCM). This means:
+
+- ✅ On your machine — works automatically, no extra steps
+- ❌ Copied to another machine — can't decrypt, must scan QR again
+- ❌ Stolen backup — encrypted, useless without the original hardware
+
+Additional recommendations:
+- Use a **secondary phone number** — your main account stays safe
+- Check **Linked Devices** in WhatsApp periodically
+- Keep your machine secure (disk encryption, strong passwords)
 
 ## Development
 

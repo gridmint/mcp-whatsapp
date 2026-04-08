@@ -1,10 +1,33 @@
-import { homedir } from "node:os"
+import { mkdirSync } from "node:fs"
 import { join } from "node:path"
 import makeWASocket, { DisconnectReason, useMultiFileAuthState, type WASocket } from "baileys"
-
-const AUTH_DIR = join(homedir(), ".mcp-whatsapp", "auth")
+import {
+	AUTH_DIR,
+	decryptAuthState,
+	encryptAuthState,
+	hasEncryptedSession,
+	hasPlaintextSession,
+} from "./crypto.js"
 
 export async function createWhatsAppClient(): Promise<WASocket> {
+	mkdirSync(AUTH_DIR, { recursive: true, mode: 0o700 })
+
+	// Decrypt session files if they exist (encrypted from previous run)
+	if (hasEncryptedSession()) {
+		try {
+			await decryptAuthState()
+			console.error("[mcp-whatsapp] Session decrypted (machine-bound)")
+		} catch (err: any) {
+			console.error(`[mcp-whatsapp] ${err.message}`)
+			console.error("[mcp-whatsapp] Scan QR code to create a new session")
+			// Clear the invalid encrypted files
+			const { readdirSync, unlinkSync } = await import("node:fs")
+			for (const f of readdirSync(AUTH_DIR)) {
+				unlinkSync(join(AUTH_DIR, f))
+			}
+		}
+	}
+
 	const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR)
 
 	const sock = makeWASocket({
@@ -14,9 +37,13 @@ export async function createWhatsAppClient(): Promise<WASocket> {
 		generateHighQualityLinkPreview: true,
 	})
 
-	sock.ev.on("creds.update", saveCreds)
+	sock.ev.on("creds.update", async () => {
+		await saveCreds()
+		// Re-encrypt after saving new credentials
+		await encryptAuthState()
+	})
 
-	sock.ev.on("connection.update", (update) => {
+	sock.ev.on("connection.update", async (update) => {
 		const { connection, lastDisconnect } = update
 
 		if (connection === "close") {
@@ -25,6 +52,10 @@ export async function createWhatsAppClient(): Promise<WASocket> {
 
 			if (shouldReconnect) {
 				console.error("[mcp-whatsapp] Reconnecting...")
+				// Encrypt before reconnect attempt
+				if (hasPlaintextSession()) {
+					await encryptAuthState()
+				}
 				createWhatsAppClient()
 			} else {
 				console.error("[mcp-whatsapp] Logged out. Please re-authenticate.")
@@ -34,6 +65,11 @@ export async function createWhatsAppClient(): Promise<WASocket> {
 
 		if (connection === "open") {
 			console.error("[mcp-whatsapp] Connected")
+			// Encrypt session after successful connection
+			if (hasPlaintextSession()) {
+				await encryptAuthState()
+				console.error("[mcp-whatsapp] Session encrypted (machine-bound)")
+			}
 		}
 	})
 
