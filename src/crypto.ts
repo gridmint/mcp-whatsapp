@@ -1,51 +1,14 @@
-import { execSync } from "node:child_process"
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs"
-import { homedir, platform } from "node:os"
+import { existsSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs"
+import { homedir } from "node:os"
 import { join } from "node:path"
+import { machineIdSync } from "node-machine-id"
 
 const AUTH_DIR = join(homedir(), ".mcp-whatsapp", "auth")
-// AES-256-GCM via Web Crypto API
 
 function getMachineId(): string {
-	const os = platform()
-
-	if (os === "linux") {
-		for (const path of ["/etc/machine-id", "/var/lib/dbus/machine-id"]) {
-			try {
-				return readFileSync(path, "utf-8").trim()
-			} catch {}
-		}
-	}
-
-	if (os === "darwin") {
-		try {
-			const out = execSync("ioreg -rd1 -c IOPlatformExpertDevice", { encoding: "utf-8" })
-			const match = out.match(/"IOPlatformUUID"\s*=\s*"([^"]+)"/)
-			if (match) return match[1]
-		} catch {}
-	}
-
-	if (os === "win32") {
-		try {
-			const out = execSync(
-				'REG QUERY "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography" /v MachineGuid',
-				{ encoding: "utf-8" },
-			)
-			const match = out.match(/MachineGuid\s+REG_SZ\s+(\S+)/)
-			if (match) return match[1]
-		} catch {}
-	}
-
-	// Fallback: generate and persist a random ID
-	const fallbackPath = join(homedir(), ".mcp-whatsapp", ".machine-id")
-	try {
-		return readFileSync(fallbackPath, "utf-8").trim()
-	} catch {
-		const id = crypto.randomUUID()
-		mkdirSync(join(homedir(), ".mcp-whatsapp"), { recursive: true, mode: 0o700 })
-		writeFileSync(fallbackPath, id, { mode: 0o600 })
-		return id
-	}
+	// node-machine-id handles Linux, macOS, Windows, FreeBSD
+	// with proper fallbacks per OS version
+	return machineIdSync(true)
 }
 
 async function deriveKey(machineId: string): Promise<CryptoKey> {
@@ -119,7 +82,6 @@ export async function encryptAuthState(): Promise<void> {
 		const filePath = join(AUTH_DIR, file)
 		await encryptFile(filePath)
 		// Remove plaintext after encryption
-		const { unlinkSync } = await import("node:fs")
 		unlinkSync(filePath)
 	}
 }
