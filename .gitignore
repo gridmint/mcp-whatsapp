@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+auth_info/
+mcp-whatsapp
+mcp-whatsapp-*
+*.exe
+.DS_Store

@@ -1,0 +1,37 @@
+{
+  "name": "mcp-whatsapp",
+  "version": "0.1.0",
+  "description": "WhatsApp MCP server — connect AI agents to WhatsApp as a regular user",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "build": "bun build src/index.ts --compile --outfile mcp-whatsapp",
+    "build:linux": "bun build src/index.ts --compile --target=bun-linux-x64 --outfile mcp-whatsapp-linux-x64",
+    "build:macos": "bun build src/index.ts --compile --target=bun-darwin-x64 --outfile mcp-whatsapp-darwin-x64",
+    "build:macos-arm": "bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile mcp-whatsapp-darwin-arm64",
+    "build:windows": "bun build src/index.ts --compile --target=bun-windows-x64 --outfile mcp-whatsapp-win-x64.exe",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "bun test"
+  },
+  "keywords": ["whatsapp", "mcp", "model-context-protocol", "ai", "agent", "baileys"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gridmint/mcp-whatsapp"
+  },
+  "author": "gridmint",
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "baileys": "^7.0.0-rc.9"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.10",
+    "bun-types": "^1.3.11"
+  }
+}
