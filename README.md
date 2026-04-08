@@ -67,39 +67,16 @@ Add to your Claude Desktop config (`claude_desktop_config.json`):
 }
 ```
 
-## Tools (20)
+## What You Can Do
 
-### Messaging (8)
-| Tool | Description |
-|------|-------------|
-| `send_message` | Send a text message |
-| `send_image` | Send an image with optional caption |
-| `send_document` | Send a file/document |
-| `send_reaction` | React to a message with emoji |
-| `read_messages` | Read recent messages from a chat |
-| `delete_message` | Delete a message for everyone |
-| `edit_message` | Edit a sent message |
-| `forward_message` | Forward a message to another chat |
-
-### Chats (7)
-| Tool | Description |
-|------|-------------|
-| `list_chats` | List all conversations |
-| `get_chat_info` | Get chat details (group or contact) |
-| `search_messages` | Search messages by keyword |
-| `archive_chat` | Archive/unarchive a chat |
-| `mute_chat` | Mute/unmute a chat |
-| `pin_chat` | Pin/unpin a chat |
-| `mark_as_read` | Mark all messages as read |
-
-### Contacts (5)
-| Tool | Description |
-|------|-------------|
-| `check_number` | Check if number is on WhatsApp |
-| `get_profile_picture` | Get profile picture URL |
-| `get_status` | Get contact's status/about text |
-| `block_contact` | Block/unblock a contact |
-| `set_presence` | Set online/typing status |
+- **Messages** — send, read, edit, delete, forward, react with emoji
+- **Media** — share images, documents, stickers, voice messages, GIFs
+- **Chats** — list conversations, search messages, archive, mute, pin
+- **Contacts** — check WhatsApp numbers, view profiles, block/unblock
+- **Presence** — set online/offline/typing status
+- **Groups** — create, manage members, settings *(coming soon)*
+- **Status/Stories** — view and post *(coming soon)*
+- **Channels** — newsletters and communities *(coming soon)*
 
 ## Authentication
 
