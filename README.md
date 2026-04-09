@@ -89,11 +89,19 @@ Session is saved to `~/.mcp-whatsapp/auth/` — you won't need to scan again unl
 
 ## Security
 
-Session files are **encrypted with your machine's hardware ID** (AES-256-GCM). This means:
+Session files are **encrypted at rest** (AES-256-GCM). By default, the encryption key is derived from your machine's hardware ID — no configuration needed.
 
 - ✅ On your machine — works automatically, no extra steps
 - ❌ Copied to another machine — can't decrypt, must scan QR again
 - ❌ Stolen backup — encrypted, useless without the original hardware
+
+Optionally, set your own encryption key via environment variable:
+
+```bash
+export MCP_WHATSAPP_SESSION_KEY=my-secret-key
+```
+
+This is useful for Docker containers, CI, or when you want to control the key yourself. If set, it takes priority over the machine ID.
 
 Additional recommendations:
 - Use a **secondary phone number** — your main account stays safe

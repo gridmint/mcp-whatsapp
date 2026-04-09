@@ -5,7 +5,11 @@ import { machineIdSync } from "node-machine-id"
 
 const AUTH_DIR = join(homedir(), ".mcp-whatsapp", "auth")
 
-function getMachineId(): string {
+function getEncryptionSecret(): string {
+	// Priority: env var override > machine-bound ID
+	const envKey = process.env.MCP_WHATSAPP_SESSION_KEY
+	if (envKey) return envKey
+
 	// node-machine-id handles Linux, macOS, Windows, FreeBSD
 	// with proper fallbacks per OS version
 	return machineIdSync(true)
@@ -55,8 +59,8 @@ let _key: CryptoKey | null = null
 
 async function getKey(): Promise<CryptoKey> {
 	if (!_key) {
-		const machineId = getMachineId()
-		_key = await deriveKey(machineId)
+		const secret = getEncryptionSecret()
+		_key = await deriveKey(secret)
 	}
 	return _key
 }
