@@ -1,6 +1,6 @@
 {
   "name": "mcp-whatsapp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "WhatsApp MCP server — connect AI agents to WhatsApp as a regular user",
   "type": "module",
   "main": "src/index.ts",
