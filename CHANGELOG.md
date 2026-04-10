@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.3.0] — 2026-04-10
+
+### Added — 21 new tools (55 → 76 total)
+
+**Communities (11 tools)**
+- `create_community` — create communities with name and description
+- `get_community_metadata` — community info and linked groups
+- `community_fetch_groups` — list all groups in a community
+- `community_create_group` — create group inside a community
+- `community_link_group` / `community_unlink_group` — manage linked groups
+- `community_update_subject` / `community_update_description` — edit community info
+- `leave_community` — leave a community
+- `community_add_members` / `community_remove_members` — manage participants
+
+**Labels (4 tools)**
+- `add_chat_label` / `remove_chat_label` — label chats (WhatsApp Business)
+- `add_message_label` / `remove_message_label` — label individual messages
+
+**Profile & Misc (6 tools)**
+- `update_profile_name` / `update_profile_status` / `update_profile_picture` — profile management
+- `get_business_profile` — view business account info
+- `create_call_link` — generate audio/video call links
+- `set_disappearing_messages` — toggle disappearing messages per chat
+
 ## [0.2.0] — 2026-04-10
 
 ### Added — 35 new tools (20 → 55 total)

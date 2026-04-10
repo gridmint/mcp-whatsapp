@@ -14,9 +14,9 @@ describe("mcp-whatsapp", () => {
 		expect(unique.size).toBe(names.length)
 	})
 
-	it("should have 55 tools", () => {
+	it("should have 76 tools", () => {
 		const tools = getTools()
-		expect(tools.length).toBe(55)
+		expect(tools.length).toBe(76)
 	})
 
 	it("should have all tool categories", () => {
@@ -58,6 +58,28 @@ describe("mcp-whatsapp", () => {
 		expect(names).toContain("get_privacy_settings")
 		expect(names).toContain("update_last_seen_privacy")
 		expect(names).toContain("update_online_privacy")
+
+		// Communities (v0.3.0)
+		expect(names).toContain("create_community")
+		expect(names).toContain("get_community_metadata")
+		expect(names).toContain("community_fetch_groups")
+		expect(names).toContain("community_create_group")
+		expect(names).toContain("community_link_group")
+		expect(names).toContain("leave_community")
+
+		// Labels (v0.3.0)
+		expect(names).toContain("add_chat_label")
+		expect(names).toContain("remove_chat_label")
+		expect(names).toContain("add_message_label")
+		expect(names).toContain("remove_message_label")
+
+		// Profile (v0.3.0)
+		expect(names).toContain("update_profile_name")
+		expect(names).toContain("update_profile_status")
+		expect(names).toContain("update_profile_picture")
+		expect(names).toContain("get_business_profile")
+		expect(names).toContain("create_call_link")
+		expect(names).toContain("set_disappearing_messages")
 	})
 
 	it("all tools should have valid inputSchema", () => {
