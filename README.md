@@ -72,7 +72,7 @@ Add to your Claude Desktop config (`claude_desktop_config.json`):
 }
 ```
 
-## Tools (76)
+## Tools (77)
 
 ### Messages (10)
 | Tool | Description |
@@ -189,6 +189,20 @@ Add to your Claude Desktop config (`claude_desktop_config.json`):
 | `get_business_profile` | Get business profile info |
 | `create_call_link` | Create audio/video call link |
 | `set_disappearing_messages` | Toggle disappearing messages |
+
+### Status (1)
+| Tool | Description |
+|------|-------------|
+| `get_connection_status` | Connection state + rate limit stats |
+
+## Rate Limiting
+
+Built-in sliding-window rate limiter protects your account from bans:
+
+- **Global**: 30 write operations per minute
+- **Per-chat**: 10 write operations per minute
+- Read operations (list, search, get) are not rate-limited
+- Exceeding limits returns a clear error with retry timing
 
 ## Authentication
 

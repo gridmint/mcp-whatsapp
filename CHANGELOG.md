@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.0.0] — 2026-04-10
+
+### Production Release 🎉
+
+**77 tools total** — the most comprehensive WhatsApp MCP server available.
+
+**Rate Limiting**
+- Sliding-window rate limiter for ban protection
+- Global limit: 30 requests/minute (configurable)
+- Per-JID limit: 10 requests/minute (configurable)
+- Write operations (sends, creates, modifies) are rate-limited; reads are not
+- `get_connection_status` tool shows current rate limit usage
+
+**Reconnection**
+- Exponential backoff reconnection (1s → 60s max)
+- Up to 10 reconnect attempts before exit
+- Connection state tracking (`connecting`, `open`, `closed`)
+- Automatic session re-encryption on reconnect
+
+**New Tool**
+- `get_connection_status` — connection state + rate limiter stats
+
+**Testing**
+- 15 tests across 3 test suites (setup, crypto, rate-limiter)
+- 488 assertions
+
 ## [0.3.0] — 2026-04-10
 
 ### Added — 21 new tools (55 → 76 total)
