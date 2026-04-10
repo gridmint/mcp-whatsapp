@@ -14,9 +14,9 @@ describe("mcp-whatsapp", () => {
 		expect(unique.size).toBe(names.length)
 	})
 
-	it("should have 76 tools", () => {
+	it("should have 77 tools", () => {
 		const tools = getTools()
-		expect(tools.length).toBe(76)
+		expect(tools.length).toBe(77)
 	})
 
 	it("should have all tool categories", () => {
@@ -80,6 +80,9 @@ describe("mcp-whatsapp", () => {
 		expect(names).toContain("get_business_profile")
 		expect(names).toContain("create_call_link")
 		expect(names).toContain("set_disappearing_messages")
+
+		// Status (v1.0.0)
+		expect(names).toContain("get_connection_status")
 	})
 
 	it("all tools should have valid inputSchema", () => {

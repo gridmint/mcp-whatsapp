@@ -9,6 +9,17 @@ import {
 	hasPlaintextSession,
 } from "./crypto.js"
 
+const MAX_RECONNECT_ATTEMPTS = 10
+const INITIAL_BACKOFF_MS = 1_000
+const MAX_BACKOFF_MS = 60_000
+
+let reconnectAttempts = 0
+let connectionState: "connecting" | "open" | "closed" = "connecting"
+
+export function getConnectionState(): string {
+	return connectionState
+}
+
 export async function createWhatsAppClient(): Promise<WASocket> {
 	mkdirSync(AUTH_DIR, { recursive: true, mode: 0o700 })
 
@@ -47,23 +58,39 @@ export async function createWhatsAppClient(): Promise<WASocket> {
 		const { connection, lastDisconnect } = update
 
 		if (connection === "close") {
+			connectionState = "closed"
 			const statusCode = (lastDisconnect?.error as any)?.output?.statusCode
 			const shouldReconnect = statusCode !== DisconnectReason.loggedOut
 
-			if (shouldReconnect) {
-				console.error("[mcp-whatsapp] Reconnecting...")
+			if (shouldReconnect && reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+				reconnectAttempts++
+				const backoff = Math.min(INITIAL_BACKOFF_MS * 2 ** (reconnectAttempts - 1), MAX_BACKOFF_MS)
+				console.error(
+					`[mcp-whatsapp] Reconnecting (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}) in ${backoff / 1000}s...`,
+				)
+
 				// Encrypt before reconnect attempt
 				if (hasPlaintextSession()) {
 					await encryptAuthState()
 				}
+
+				await new Promise((r) => setTimeout(r, backoff))
+				connectionState = "connecting"
 				createWhatsAppClient()
-			} else {
+			} else if (!shouldReconnect) {
 				console.error("[mcp-whatsapp] Logged out. Please re-authenticate.")
+				process.exit(1)
+			} else {
+				console.error(
+					`[mcp-whatsapp] Max reconnect attempts (${MAX_RECONNECT_ATTEMPTS}) reached. Exiting.`,
+				)
 				process.exit(1)
 			}
 		}
 
 		if (connection === "open") {
+			connectionState = "open"
+			reconnectAttempts = 0
 			console.error("[mcp-whatsapp] Connected")
 			// Encrypt session after successful connection
 			if (hasPlaintextSession()) {

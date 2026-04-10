@@ -7,7 +7,7 @@ import { getTools, handleToolCall } from "./tools/index.js"
 const server = new Server(
 	{
 		name: "mcp-whatsapp",
-		version: "0.3.0",
+		version: "1.0.0",
 	},
 	{
 		capabilities: {
