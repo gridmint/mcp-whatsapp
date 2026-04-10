@@ -1,12 +1,15 @@
 import type { Tool } from "@modelcontextprotocol/sdk/types.js"
 import type { WASocket } from "../client.js"
 import { chatTools, handleChatTool } from "./chats.js"
+import { communityTools, handleCommunityTool } from "./communities.js"
 import { contactTools, handleContactTool } from "./contacts.js"
 import { groupTools, handleGroupTool } from "./groups.js"
+import { handleLabelTool, labelTools } from "./labels.js"
 import { handleMediaTool, mediaTools } from "./media.js"
 import { handleMessagingTool, messagingTools } from "./messaging.js"
 import { handleNewsletterTool, newsletterTools } from "./newsletters.js"
 import { handlePrivacyTool, privacyTools } from "./privacy.js"
+import { handleProfileTool, profileTools } from "./profile.js"
 
 const allTools: Tool[] = [
 	...messagingTools,
@@ -16,6 +19,9 @@ const allTools: Tool[] = [
 	...mediaTools,
 	...newsletterTools,
 	...privacyTools,
+	...communityTools,
+	...labelTools,
+	...profileTools,
 ]
 
 export function getTools(): Tool[] {
@@ -35,6 +41,9 @@ export async function handleToolCall(
 		{ tools: mediaTools, handler: handleMediaTool },
 		{ tools: newsletterTools, handler: handleNewsletterTool },
 		{ tools: privacyTools, handler: handlePrivacyTool },
+		{ tools: communityTools, handler: handleCommunityTool },
+		{ tools: labelTools, handler: handleLabelTool },
+		{ tools: profileTools, handler: handleProfileTool },
 	]
 
 	for (const { tools, handler } of toolSets) {

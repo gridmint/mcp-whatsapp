@@ -23,10 +23,12 @@ Built with [Baileys](https://github.com/WhiskeySockets/Baileys), [Bun](https://b
 - 💬 **Messages** — send, read, edit, delete, forward, react, polls, star
 - 📎 **Media** — images, videos, documents, stickers, voice notes, audio, locations, contacts
 - 👥 **Groups** — create, manage members, promote/demote admins, invite links, settings
+- 🏘️ **Communities** — create, link/unlink groups, manage members
 - 📢 **Channels** — create, follow/unfollow, mute newsletters
+- 🏷️ **Labels** — label chats and messages (WhatsApp Business)
 - 🔒 **Privacy** — last seen, profile photo, online status, read receipts, group add
-- 👤 **Contacts** — check numbers, profiles, block/unblock, presence
-- 🗂️ **Chats** — list, search, archive, mute, pin, mark read
+- 👤 **Profile** — update name, status, picture, business profiles, call links
+- 🗂️ **Chats** — list, search, archive, mute, pin, mark read, disappearing messages
 - 🔐 **Machine-bound sessions** — encrypted with hardware ID, useless if copied to another device
 - 📦 **Single binary** — no Node.js, no npm, just download and run
 
@@ -70,7 +72,7 @@ Add to your Claude Desktop config (`claude_desktop_config.json`):
 }
 ```
 
-## Tools (55)
+## Tools (76)
 
 ### Messages (10)
 | Tool | Description |
@@ -155,6 +157,39 @@ Add to your Claude Desktop config (`claude_desktop_config.json`):
 | `update_groups_add_privacy` | Who can add you to groups |
 | `update_online_privacy` | Who sees when you're online |
 
+### Communities (11)
+| Tool | Description |
+|------|-------------|
+| `create_community` | Create a new community |
+| `get_community_metadata` | Get community info |
+| `community_fetch_groups` | List linked groups |
+| `community_create_group` | Create a group in a community |
+| `community_link_group` | Link existing group to community |
+| `community_unlink_group` | Unlink a group |
+| `community_update_subject` | Update community name |
+| `community_update_description` | Update community description |
+| `leave_community` | Leave a community |
+| `community_add_members` | Add members |
+| `community_remove_members` | Remove members |
+
+### Labels (4)
+| Tool | Description |
+|------|-------------|
+| `add_chat_label` | Add label to a chat |
+| `remove_chat_label` | Remove label from a chat |
+| `add_message_label` | Add label to a message |
+| `remove_message_label` | Remove label from a message |
+
+### Profile & Misc (6)
+| Tool | Description |
+|------|-------------|
+| `update_profile_name` | Change your display name |
+| `update_profile_status` | Change your about text |
+| `update_profile_picture` | Change your profile photo |
+| `get_business_profile` | Get business profile info |
+| `create_call_link` | Create audio/video call link |
+| `set_disappearing_messages` | Toggle disappearing messages |
+
 ## Authentication
 
 On first run, a QR code is displayed in the terminal. Scan it with WhatsApp on your phone:
@@ -203,11 +238,14 @@ bun test             # run tests
 - [x] ~~Newsletters/Channels~~ (v0.2.0)
 - [x] ~~Privacy settings~~ (v0.2.0)
 - [x] ~~Polls~~ (v0.2.0)
+- [x] ~~Community management~~ (v0.3.0)
+- [x] ~~Business features (labels)~~ (v0.3.0)
+- [x] ~~Profile management~~ (v0.3.0)
+- [x] ~~Call link creation~~ (v0.3.0)
+- [x] ~~Disappearing messages~~ (v0.3.0)
 - [ ] Status/Stories (view and post)
-- [ ] Community management
-- [ ] Business features (labels, catalogs)
+- [ ] Product catalogs
 - [ ] Rate limiting (ban protection)
-- [ ] Call link creation
 
 ## License
 
