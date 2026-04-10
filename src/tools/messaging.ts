@@ -4,12 +4,17 @@ import type { WASocket } from "../client.js"
 export const messagingTools: Tool[] = [
 	{
 		name: "send_message",
-		description: "Send a text message to a WhatsApp chat",
+		description:
+			"Send a text message to a WhatsApp chat. Supports quoting/replying to a specific message.",
 		inputSchema: {
 			type: "object",
 			properties: {
 				jid: { type: "string", description: "Chat JID (e.g. 1234567890@s.whatsapp.net)" },
 				text: { type: "string", description: "Message text" },
+				quoted_message_id: {
+					type: "string",
+					description: "Optional: message ID to reply/quote",
+				},
 			},
 			required: ["jid", "text"],
 		},
@@ -49,7 +54,7 @@ export const messagingTools: Tool[] = [
 			properties: {
 				jid: { type: "string", description: "Chat JID" },
 				message_id: { type: "string", description: "Message ID to react to" },
-				emoji: { type: "string", description: "Reaction emoji" },
+				emoji: { type: "string", description: "Reaction emoji (empty string to remove)" },
 			},
 			required: ["jid", "message_id", "emoji"],
 		},
@@ -104,12 +109,54 @@ export const messagingTools: Tool[] = [
 			required: ["from_jid", "to_jid", "message_id"],
 		},
 	},
+	{
+		name: "create_poll",
+		description: "Create a poll in a WhatsApp chat",
+		inputSchema: {
+			type: "object",
+			properties: {
+				jid: { type: "string", description: "Chat JID" },
+				name: { type: "string", description: "Poll question" },
+				options: {
+					type: "array",
+					items: { type: "string" },
+					description: "Poll answer options (2-12 items)",
+				},
+				selectable_count: {
+					type: "number",
+					description: "Max selections allowed (0 = unlimited, default: 1)",
+				},
+			},
+			required: ["jid", "name", "options"],
+		},
+	},
+	{
+		name: "star_message",
+		description: "Star or unstar a message",
+		inputSchema: {
+			type: "object",
+			properties: {
+				jid: { type: "string", description: "Chat JID" },
+				message_id: { type: "string", description: "Message ID to star/unstar" },
+				star: { type: "boolean", description: "true to star, false to unstar" },
+			},
+			required: ["jid", "message_id", "star"],
+		},
+	},
 ]
 
 export async function handleMessagingTool(client: WASocket, args: any): Promise<any> {
 	switch (args.toolName) {
-		case "send_message":
-			return client.sendMessage(args.jid, { text: args.text })
+		case "send_message": {
+			const options: any = {}
+			if (args.quoted_message_id) {
+				options.quoted = {
+					key: { id: args.quoted_message_id, remoteJid: args.jid },
+					message: {},
+				}
+			}
+			return client.sendMessage(args.jid, { text: args.text }, options)
+		}
 
 		case "send_image":
 			return client.sendMessage(args.jid, {
@@ -139,6 +186,18 @@ export async function handleMessagingTool(client: WASocket, args: any): Promise<
 				edit: { id: args.message_id, remoteJid: args.jid, fromMe: true },
 				text: args.text,
 			})
+
+		case "create_poll":
+			return client.sendMessage(args.jid, {
+				poll: {
+					name: args.name,
+					values: args.options,
+					selectableCount: args.selectable_count ?? 1,
+				},
+			})
+
+		case "star_message":
+			return client.star(args.jid, [{ id: args.message_id, fromMe: true }])
 
 		default:
 			throw new Error(`Unknown messaging tool: ${args.toolName}`)

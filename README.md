@@ -20,11 +20,14 @@ Built with [Baileys](https://github.com/WhiskeySockets/Baileys), [Bun](https://b
 ## Features
 
 - 🔌 **MCP Protocol** — works with Claude Desktop, Cursor, and any MCP client
-- 💬 **Messages** — send, read, edit, delete, forward, react
-- 📎 **Media** — images, documents, stickers, voice
-- 👥 **Chats** — list, search, archive, mute, pin
+- 💬 **Messages** — send, read, edit, delete, forward, react, polls, star
+- 📎 **Media** — images, videos, documents, stickers, voice notes, audio, locations, contacts
+- 👥 **Groups** — create, manage members, promote/demote admins, invite links, settings
+- 📢 **Channels** — create, follow/unfollow, mute newsletters
+- 🔒 **Privacy** — last seen, profile photo, online status, read receipts, group add
 - 👤 **Contacts** — check numbers, profiles, block/unblock, presence
-- 🔒 **Machine-bound sessions** — encrypted with hardware ID, useless if copied to another device
+- 🗂️ **Chats** — list, search, archive, mute, pin, mark read
+- 🔐 **Machine-bound sessions** — encrypted with hardware ID, useless if copied to another device
 - 📦 **Single binary** — no Node.js, no npm, just download and run
 
 ## Quick Start
@@ -67,16 +70,90 @@ Add to your Claude Desktop config (`claude_desktop_config.json`):
 }
 ```
 
-## What You Can Do
+## Tools (55)
 
-- **Messages** — send, read, edit, delete, forward, react with emoji
-- **Media** — share images, documents, stickers, voice messages, GIFs
-- **Chats** — list conversations, search messages, archive, mute, pin
-- **Contacts** — check WhatsApp numbers, view profiles, block/unblock
-- **Presence** — set online/offline/typing status
-- **Groups** — create, manage members, settings *(coming soon)*
-- **Status/Stories** — view and post *(coming soon)*
-- **Channels** — newsletters and communities *(coming soon)*
+### Messages (10)
+| Tool | Description |
+|------|-------------|
+| `send_message` | Send text with optional quote/reply |
+| `send_image` | Send an image with optional caption |
+| `send_document` | Send a file/document |
+| `send_reaction` | React to a message with emoji |
+| `read_messages` | Read recent messages from a chat |
+| `delete_message` | Delete a message for everyone |
+| `edit_message` | Edit a sent message |
+| `forward_message` | Forward a message to another chat |
+| `create_poll` | Create a poll with multiple options |
+| `star_message` | Star or unstar a message |
+
+### Chats (7)
+| Tool | Description |
+|------|-------------|
+| `list_chats` | List all conversations |
+| `get_chat_info` | Get chat/group details |
+| `search_messages` | Search messages by keyword |
+| `archive_chat` | Archive or unarchive a chat |
+| `mute_chat` | Mute or unmute notifications |
+| `pin_chat` | Pin or unpin a chat |
+| `mark_as_read` | Mark all messages as read |
+
+### Contacts (5)
+| Tool | Description |
+|------|-------------|
+| `check_number` | Check if number is on WhatsApp |
+| `get_profile_picture` | Get profile picture URL |
+| `get_status` | Get contact's about/status text |
+| `block_contact` | Block or unblock a contact |
+| `set_presence` | Set online/offline/typing status |
+
+### Groups (13)
+| Tool | Description |
+|------|-------------|
+| `create_group` | Create a new group |
+| `get_group_metadata` | Get full group info & participants |
+| `update_group_subject` | Change group name |
+| `update_group_description` | Change group description |
+| `add_group_members` | Add members to a group |
+| `remove_group_members` | Remove members from a group |
+| `promote_group_admin` | Promote members to admin |
+| `demote_group_admin` | Demote admins to members |
+| `leave_group` | Leave a group |
+| `get_group_invite_link` | Get group invite link |
+| `revoke_group_invite` | Revoke and regenerate invite link |
+| `join_group_via_invite` | Join group using invite code |
+| `update_group_settings` | Update who can send/edit info |
+
+### Media (7)
+| Tool | Description |
+|------|-------------|
+| `send_video` | Send video (or GIF) |
+| `send_sticker` | Send a sticker |
+| `send_voice` | Send voice note (with waveform) |
+| `send_audio` | Send audio file |
+| `send_location` | Send a location pin |
+| `send_contact` | Send a contact card (vCard) |
+| `download_media` | Download media from a message |
+
+### Channels / Newsletters (6)
+| Tool | Description |
+|------|-------------|
+| `create_newsletter` | Create a WhatsApp Channel |
+| `get_newsletter_info` | Get channel metadata |
+| `follow_newsletter` | Subscribe to a channel |
+| `unfollow_newsletter` | Unsubscribe from a channel |
+| `mute_newsletter` | Mute channel notifications |
+| `unmute_newsletter` | Unmute channel notifications |
+
+### Privacy (7)
+| Tool | Description |
+|------|-------------|
+| `get_privacy_settings` | Get current privacy settings |
+| `update_last_seen_privacy` | Who sees your last seen |
+| `update_profile_picture_privacy` | Who sees your profile photo |
+| `update_status_privacy` | Who sees your about/status |
+| `update_read_receipts_privacy` | Toggle blue ticks |
+| `update_groups_add_privacy` | Who can add you to groups |
+| `update_online_privacy` | Who sees when you're online |
 
 ## Authentication
 
@@ -121,15 +198,16 @@ bun test             # run tests
 
 ## Roadmap
 
-- [ ] Group management (create, invite, admin tools)
-- [ ] Stickers, GIFs, voice messages
+- [x] ~~Group management~~ (v0.2.0)
+- [x] ~~Stickers, GIFs, voice messages~~ (v0.2.0)
+- [x] ~~Newsletters/Channels~~ (v0.2.0)
+- [x] ~~Privacy settings~~ (v0.2.0)
+- [x] ~~Polls~~ (v0.2.0)
 - [ ] Status/Stories (view and post)
-- [ ] Newsletters/Channels
 - [ ] Community management
 - [ ] Business features (labels, catalogs)
-- [ ] Privacy settings
-- [ ] Polls
 - [ ] Rate limiting (ban protection)
+- [ ] Call link creation
 
 ## License
 
